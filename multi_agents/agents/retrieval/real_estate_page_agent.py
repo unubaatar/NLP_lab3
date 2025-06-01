@@ -35,11 +35,11 @@ class RealEstatePageRetriever(BaseAgent):
     @override
     async def _run_async_impl(self, ctx: InvocationContext) -> AsyncGenerator[Event, None]:
         url_text = ctx.session.events[0].content.parts[0].text
-        # for event in ctx.session.events:
-        #     print("Event ", event)
-        #     if hasattr(event.content.parts[0], "text"):
-        #         print("event text: ", )
-        # print("event text: ", ctx.session.events[0])
+        for event in ctx.session.events:
+            print("Event ", event)
+            if hasattr(event.content.parts[0], "text"):
+                print("event text: ", )
+        print("event text: ", ctx.session.events[0])
         url = url_text
 
         response = requests.get(url)
