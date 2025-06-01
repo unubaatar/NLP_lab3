@@ -1,0 +1,21 @@
+# Libraries
+langchain
+langchain-core
+langchain-community
+langchain-together
+pydantic
+typing-extensions
+requests
+beautifulsoup4
+python-dotenv
+google-adk
+google-genai
+tavily-python
+faiss-cpu
+torch
+torchvision
+torchaudio
+fpdf2
+sentence-transformers
+langchain-huggingface
+fpdf
