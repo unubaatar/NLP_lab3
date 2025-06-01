@@ -1,19 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import unquote, urljoin
+from urllib.parse import urljoin, quote
 import json
 import time
 
-def get_adv_urls(main_url):
+def get_adv_urls(main_url, query_string):
+    # Construct the URL with the query string
+    url = f"{main_url}?{query_string}" if query_string else main_url
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
     
     try:
-        response = requests.get(main_url, headers=headers)
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
     except requests.RequestException as e:
-        print(f"Error fetching main page: {e}")
+        print(f"Error fetching main page {url}: {e}")
         return []
 
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -89,11 +91,33 @@ def scrape_listing_data(url):
     return data
 
 def main():
-    main_url = 'https://www.unegui.mn/l-hdlh/l-hdlh-zarna/'
-    decoded_url = unquote(main_url)
-    print(f"Scraping 'adv' URLs from: {decoded_url}\n")
+    base_url = 'https://www.unegui.mn/l-hdlh/l-hdlh-zarna/'
+    
+    # Define query parameters in a variable
+    query_params = {
+        "q": ["Хан уул", "2 өрөө"],
+        "paging": 1
+    }
+    
+    # Construct the query string from the params variable
+    query_parts = []
+    for key, value in query_params.items():
+        if key == 'q' and isinstance(value, list):
+            # For 'q', join the terms with a space and URL-encode
+            query_value = ' '.join(value)
+            encoded_value = quote(query_value)
+        else:
+            # For other params, convert to string and URL-encode
+            encoded_value = quote(str(value))
+        query_parts.append(f"{key}={encoded_value}")
+    
+    query_string = '&'.join(query_parts)
+    
+    # Construct the full URL
+    full_url = f"{base_url}?{query_string}" if query_string else base_url
+    print(f"Scraping 'adv' URLs from: {full_url}\n")
 
-    adv_urls = get_adv_urls(main_url)
+    adv_urls = get_adv_urls(base_url, query_string)
     
     if not adv_urls:
         print("No 'adv' URLs found.")
@@ -113,10 +137,10 @@ def main():
 
     if listings_data:
         # Save to JSON
-        with open('unegui_all_adv_listings.json', 'w', encoding='utf-8') as f:
+        with open('unegui_hardcoded_params_listings.json', 'w', encoding='utf-8') as f:
             json.dump(listings_data, f, ensure_ascii=False, indent=4)
         
-        print("\nData saved to unegui_all_adv_listings.json")
+        print("\nData saved to unegui_hardcoded_params_listings.json")
         print("\nScraped data:")
         for listing in listings_data:
             print("\nListing:")
