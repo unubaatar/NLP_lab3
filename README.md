@@ -1,12 +1,12 @@
-# Энэ коммандаар virtual env тааруулаарай broders 
+#virtual env
 python -m venv venv
 
-# Тэгээд энүүгээр activate хийгээд  
+# virtual env activate   
 venv\Scripts\activate
 
-# Аан харин энүүгээр болхоороо сангуудаа install хийхийн байнлээ 
+# install libraries 
 pip install -r requirements.txt 
 
-# Энүүгээр тэгээд web ээ ажиллуулна гэсэн. ( localhost: 8k дээр )
+# web code 
 adk web 
 
