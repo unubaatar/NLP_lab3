@@ -24,9 +24,6 @@ def findFeature(li_list, header):
   return ret
 
 class RealEstatePageRetriever(BaseAgent):
-    # --- Field Declarations for Pydantic ---
-
-    # model_config allows setting Pydantic configurations if needed, e.g., arbitrary_types_allowed
     model_config = {"arbitrary_types_allowed": True}
 
     def __init__(self, name: str):
@@ -47,7 +44,6 @@ class RealEstatePageRetriever(BaseAgent):
             print(response.status_code)
             print('error ',url)
         else:
-            # Extracting the information from the given web page.
             soup = BeautifulSoup(response.text,"html.parser")
             title = soup.find("h1", {"class": "title-announcement"}).text.strip()
             price = soup.find("div", {"class": "announcement-price__cost"}).text.replace('үнэ тохирно','').strip()

@@ -7,7 +7,7 @@ class ReportAgent:
         self.filename = filename
         self.pdf = FPDF()
         self.pdf.set_auto_page_break(auto=True, margin=15)
-        # Фонт оруулах
+        # Фонт оруулсан байдал:
         self.pdf.add_font('DejaVu', '', 'DejaVuSans.ttf', uni=True)
 
     def generate(self, df: pd.DataFrame):
@@ -29,7 +29,7 @@ class ReportAgent:
         self.pdf.ln(10)
 
     def _add_district_section(self, df):
-        self.pdf.cell(0, 10, "1. Дүүрэг тус бүрт байрны тоо:", ln=True)
+        self.pdf.cell(0, 10, "1. Дүүрэг тус бүр дэхь байрны тоо:", ln=True)
         district_counts = df['district'].value_counts()
         for district, count in district_counts.items():
             self.pdf.cell(0, 10, f"{district}: {count}", ln=True)

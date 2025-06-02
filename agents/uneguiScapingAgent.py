@@ -68,20 +68,19 @@ class UneguiAgent:
                 if key_elem and value_elem:
                     key = key_elem.get_text(strip=True).replace(':', '').strip()
                     value = value_elem.get_text(strip=True)
-                    # Хэлний болон нэрийн хөрвүүлэлт
                     key_mapping = {
                         'өрөө': 'Rooms',
                         'шинэ': 'Type',
                         'талбай': 'Area',
                         'тагт': 'Balcony',
-                        'ашиглалтын осон он': 'Year_of_Use',
+                        'ашиглалтанд орсон он': 'Year_of_Use',
                         'худалдааны объект': 'Commercial_Object',
                         'телевизийн холболт (horizontal)': 'TV_Connection',
-                        'гараж': 'Garage',
+                        'граж': 'Garage',
                         'лооных': 'Loggia',
                         'барилгын давхар': 'Building_Floors',
                         'хаалга': 'Door',
-                        'ямар давхар': 'Floor_Number',
+                        'давхарын дугаар': 'Floor_Number',
                         'цахилгаан шат': 'Elevator',
                         'барилгын нийт давхар': 'Total_Building_Floors',
                         'цонхны тоо': 'Number_of_Windows',

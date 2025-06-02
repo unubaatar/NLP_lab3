@@ -7,7 +7,7 @@ class PDFReportAgent:
         self.pdf = FPDF()
         self.pdf.add_page()
 
-        # Unicode дэмждэг фонт нэмэх
+        # Unicode дэмждэг фонт нэмсэн байдал:
         font_path = os.path.join("fonts", "DejaVuSans.ttf")
         self.pdf.add_font("DejaVu", "", font_path, uni=True)
         self.pdf.set_font("DejaVu", size=12)
@@ -20,7 +20,7 @@ class PDFReportAgent:
     def generate(self, df, tavily_results=None):
         self._write_line("=== Үл хөдлөх хөрөнгийн дэлгэрэнгүй тайлан ===")
 
-        # 1. Өрөөний тоогоор байрны тоо
+        # 1. Өрөөний тоогоор ангилсан байрны тоо
         self._write_line("1. Өрөөний тоогоор ангилсан байрны тоо:")
         room_counts = df['rooms'].value_counts(dropna=True).sort_index()
         for room, count in room_counts.items():
@@ -32,7 +32,7 @@ class PDFReportAgent:
         for room, avg_price in avg_price_by_room.items():
             self._write_line(f"{room} өрөөтэй байрны дундаж үнэ {avg_price:.1f} сая төгрөг байна.")
 
-        # 3. Цонхны тоогоор байрны тоо
+        # 3. Цонхны тоогоор ангилсан байрны тоо
         self._write_line("3. Цонхны тоогоор ангилсан байрны тоо:")
         window_counts = df['Number_of_Windows'].value_counts(dropna=True).sort_index()
         for win, count in window_counts.items():

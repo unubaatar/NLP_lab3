@@ -13,13 +13,13 @@ from agents.uneguiScapingAgent import UneguiAgent
 def prepare_dataframe(data):
     df = pd.DataFrame(data)
 
-    # Өрөөний тоо гаргах
+    # Өрөөний тоо
     def extract_rooms(text):
         m = re.search(r'(\d+)\s*өрөө', str(text))
         return int(m.group(1)) if m else None
     df['rooms'] = df['Name'].apply(extract_rooms)
 
-    # Цонхны тоо гаргах (байвал)
+    # Цонхны тоо гаргах
     def extract_windows(text):
         m = re.search(r'(\d+)\s*цонх', str(text))
         return int(m.group(1)) if m else None

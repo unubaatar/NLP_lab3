@@ -47,10 +47,7 @@ from langchain_core.runnables import (
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
 
 class DistrictAnalysisAgent(BaseAgent):
-    # --- Field Declarations for Pydantic ---
     llm_model: ChatTogether
-
-    # model_config allows setting Pydantic configurations if needed, e.g., arbitrary_types_allowed
     model_config = {"arbitrary_types_allowed": True}
 
     def __init__(self, name: str, llm_model: ChatTogether):
@@ -68,11 +65,11 @@ class DistrictAnalysisAgent(BaseAgent):
                 "3 өрөө байрны 1м2 дундаж үнэ": {"Хан-Уул": "3,900,323 төгрөг", "Баянгол": "3,410,645 төгрөг"},
             }
             prompt_template = """
-Байршилийн мэдээлэл өгөгдөх үед харгалзах дүүргийн м2 квадратын дундаж мэдээллүүдийг харуулна уу.
+Байршлын мэдээлэл өгөгдөх үед харгалзах дүүргийн 1м2 квадратын дундаж мэдээллийг харуулна уу.
 
 
 
-Байршилийн мэдээлэл:
+Байршлын мэдээлэл:
 <context>
 {context}
 </context>
@@ -104,5 +101,4 @@ Your output:
                 branch=ctx.branch
             )
         except Exception as e:
-            # Return the default response in case of an exception
             print("Error: ",e)
