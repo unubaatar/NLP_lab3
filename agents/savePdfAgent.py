@@ -1,59 +1,58 @@
 from fpdf import FPDF
-import pandas as pd
+import os
 
-class ReportAgent:
-    def __init__(self, filename="real_estate_report.pdf"):
+class PDFReportAgent:
+    def __init__(self, filename="report.pdf"):
         self.filename = filename
         self.pdf = FPDF()
-        self.pdf.set_auto_page_break(auto=True, margin=15)
-
-    def generate(self, df: pd.DataFrame):
         self.pdf.add_page()
-        self.pdf.set_font("Arial", size=12)
 
-        self._add_title("Үл хөдлөх хөрөнгийн тайлан")
-        self._add_district_section(df)
-        self._add_room_section(df)
-        self._add_price_statistics(df)
-        self._add_sample_listings(df)
+        # Unicode дэмждэг фонт нэмэх
+        font_path = os.path.join("fonts", "DejaVuSans.ttf")
+        self.pdf.add_font("DejaVu", "", font_path, uni=True)
+        self.pdf.set_font("DejaVu", size=12)
 
-        self._save()
+    def _write_line(self, text, ln=True):
+        self.pdf.multi_cell(0, 10, txt=text)
+        if ln:
+            self.pdf.ln()
 
-    def _add_title(self, title):
-        self.pdf.set_font("Arial", style='B', size=14)
-        self.pdf.cell(0, 10, title, ln=True, align='C')
-        self.pdf.set_font("Arial", size=12)
-        self.pdf.ln(10)
+    def generate(self, df, tavily_results=None):
+        self._write_line("=== Үл хөдлөх хөрөнгийн дэлгэрэнгүй тайлан ===")
 
-    def _add_district_section(self, df):
-        self.pdf.cell(0, 10, "1. Дүүрэг тус бүрт байрны тоо:", ln=True)
-        district_counts = df['district'].value_counts()
-        for district, count in district_counts.items():
-            self.pdf.cell(0, 10, f"{district}: {count}", ln=True)
-        self.pdf.ln(5)
+        # 1. Өрөөний тоогоор байрны тоо
+        self._write_line("1. Өрөөний тоогоор ангилсан байрны тоо:")
+        room_counts = df['rooms'].value_counts(dropna=True).sort_index()
+        for room, count in room_counts.items():
+            self._write_line(f"{room} өрөөтэй нийт {count} байр байна.")
 
-    def _add_room_section(self, df):
-        self.pdf.cell(0, 10, "2. Өрөөний тоогоор ангилсан байрны тоо:", ln=True)
-        rooms_counts = df['rooms'].value_counts(dropna=True)
-        for rooms, count in rooms_counts.items():
-            self.pdf.cell(0, 10, f"{rooms} өрөө: {count}", ln=True)
-        self.pdf.ln(5)
+        # 2. Өрөө тус бүрийн дундаж үнэ
+        self._write_line("2. Өрөө тус бүрийн дундаж үнэ (сая ₮):")
+        avg_price_by_room = df.groupby('rooms')['price_mn'].mean().sort_index()
+        for room, avg_price in avg_price_by_room.items():
+            self._write_line(f"{room} өрөөтэй байрны дундаж үнэ {avg_price:.1f} сая төгрөг байна.")
 
-    def _add_price_statistics(self, df):
-        self.pdf.cell(0, 10, "3. Үнийн статистик (сая төгрөгөөр):", ln=True)
-        desc = df['price_mn'].describe()
-        for stat_name, stat_value in desc.items():
-            self.pdf.cell(0, 10, f"{stat_name}: {stat_value:.2f}", ln=True)
-        self.pdf.ln(5)
+        # 3. Цонхны тоогоор байрны тоо
+        self._write_line("3. Цонхны тоогоор ангилсан байрны тоо:")
+        window_counts = df['Number_of_Windows'].value_counts(dropna=True).sort_index()
+        for win, count in window_counts.items():
+            self._write_line(f"{win} цонхтой нийт {count} байр бүртгэгдсэн байна.")
 
-    def _add_sample_listings(self, df):
-        self.pdf.cell(0, 10, "4. Жишээ байрны мэдээлэл:", ln=True)
-        sample = df[['Name', 'Price', 'rooms', 'district']].head()
-        for idx, row in sample.iterrows():
-            line = f"{idx+1}. {row['Name']} | Үнэ: {row['Price']} | Өрөө: {row['rooms']} | Дүүрэг: {row['district']}"
-            self.pdf.multi_cell(0, 10, line)
-        self.pdf.ln(5)
+        # 4. Цонхны тоонд суурилсан дундаж үнэ
+        self._write_line("4. Цонхны тоонд тулгуурласан дундаж үнэ:")
+        avg_price_by_window = df.groupby('Number_of_Windows')['price_mn'].mean().sort_index()
+        for win, avg_price in avg_price_by_window.items():
+            self._write_line(f"{win} цонхтой байрны дундаж үнэ {avg_price:.1f} сая төгрөг байна.")
 
-    def _save(self):
+        # 5. Tavily AI хайлтын үр дүн
+        self._write_line("5. Tavily AI хайлтын эхний 5 үр дүн:")
+        if tavily_results:
+            for i, res in enumerate(tavily_results[:5], 1):
+                title = res.get("title", "Гарчиг байхгүй")
+                url = res.get("url", "Холбоос байхгүй")
+                self._write_line(f"{i}. {title}\n   Холбоос: {url}")
+        else:
+            self._write_line("Tavily-аас үр дүн ирээгүй байна.")
+
         self.pdf.output(self.filename)
-        print(f"\n✅ Тайлан {self.filename} нэртэй PDF файлд хадгалагдлаа.")
+        print(f"\n📄 Тайлан PDF файл болгон хадгалагдлаа: {self.filename}")

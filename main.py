@@ -6,6 +6,7 @@ import numpy as np
 
 from agents.paramBuildAgent import build_search_params
 from agents.regexAgent import parse_user_input
+from agents.savePdfAgent import PDFReportAgent
 from agents.tavilySearchAgent import TavilySearchAgent
 from agents.uneguiScapingAgent import UneguiAgent
 
@@ -85,6 +86,9 @@ def main():
 
     # 6. Тайлан хэвлэх
     generate_report(df, tavily_results)
+    
+    pdf_agent = PDFReportAgent(filename="apartment_report.pdf")
+    pdf_agent.generate(df, tavily_results)
 
 if __name__ == "__main__":
     main()
