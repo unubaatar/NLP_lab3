@@ -1,1 +1,51 @@
-[]
+[
+    {
+        "Name": "Худ 19-хороо хан-уул цогцолбор хотхонд 2-өрөө",
+        "Price": "258 сая₮үнэ тохирно",
+        "URL": "https://www.unegui.mn/adv/9396718_khud-19-khoroo-khan-uul-tsogtsolbor-khotkhond-2-oroo-khudaldana/",
+        "Шал": "Паркет",
+        "Balcony": "1 тагттай",
+        "Garage": "Байхгүй",
+        "Цонх": "Вакум",
+        "Door": "Бүргэд",
+        "Number_of_Windows": "2"
+    },
+    {
+        "Name": "Хан уул дүүргийн хажууд 32 байр нд 70мкв 3 өрөө орон сууц",
+        "Price": "350 сая₮",
+        "URL": "https://www.unegui.mn/adv/9358634_khan-uul-duurgiin-khazhuud-32-bair-nd-70mkv-3-oroo-oron-suuts/",
+        "Шал": "Паркет",
+        "Balcony": "1 тагттай",
+        "Garage": "Байхгүй",
+        "Цонх": "Вакум",
+        "Door": "Бүргэд",
+        "Number_of_Windows": "3"
+    },
+    {
+        "Name": "N/A",
+        "Price": "N/A",
+        "URL": "https://www.unegui.mn/advertising/"
+    },
+    {
+        "Name": "Худ, 15-р хороо river villa хотхонд саруулхан 3 өрөө 75m2",
+        "Price": "310 сая₮",
+        "URL": "https://www.unegui.mn/adv/9364736_khud-15-r-khoroo-river-villa-khotkhond-saruulkhan-3-oroo-khudaldana/",
+        "Шал": "Паркет",
+        "Balcony": "1 тагттай",
+        "Garage": "Байхгүй",
+        "Цонх": "Вакум",
+        "Door": "Бүргэд",
+        "Number_of_Windows": "3"
+    },
+    {
+        "Name": "Хан уул дүүрэг хотын 2 өрөө байр 56м2",
+        "Price": "245 сая₮үнэ тохирно",
+        "URL": "https://www.unegui.mn/adv/9389992_khan-uul-duureg-khotyn-khamgiin-ashigtai-bairlald-2-oroo-bair-zarna/",
+        "Шал": "Паркет",
+        "Balcony": "1 тагттай",
+        "Garage": "Байхгүй",
+        "Цонх": "Вакум",
+        "Door": "Бүргэд",
+        "Number_of_Windows": "3"
+    }
+]
